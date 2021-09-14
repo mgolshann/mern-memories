@@ -1,16 +1,28 @@
-import React from 'react';
-import { Container, Grow, Grid, AppBar, Typography} from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Container, Grow, Grid, AppBar, Typography } from '@material-ui/core';
+
+// redux
+import { useDispatch } from 'react-redux'
+
+// actions
+import { getPosts } from './actions'
+
+// Styles
+import useStyle from './styles'
 
 // Components
 import Posts from './components/Posts/Posts'
 import Form from './components/Form/Form'
 import memories from './images/memories.png'
 
-// Styles
-import useStyle from './styles'
-
 const App = () => {
     const classes = useStyle();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getPosts())
+    }, [dispatch])
+
     return (
         <Container maxWidth="lg">
             <AppBar className={classes.appBar} position="static" color="inherit">
@@ -19,7 +31,7 @@ const App = () => {
             </AppBar>
             <Grow in>
                 <Container>
-                    <Grid container justify="space-between" alignItems="stretch">
+                    <Grid container justifyContent="space-between" alignItems="stretch">
                         <Grid item xs={12} sm={7}>
                             <Posts />
                         </Grid>
