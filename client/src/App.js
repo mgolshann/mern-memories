@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Grow, Grid, AppBar, Typography } from '@material-ui/core';
 
 // redux
@@ -18,10 +18,11 @@ import memories from './images/memories.png'
 const App = () => {
     const classes = useStyle();
     const dispatch = useDispatch();
+    const [currentPostId, setCurrentPostId] = useState(null);
 
     useEffect(() => {
         dispatch(getPosts())
-    }, [dispatch])
+    }, [currentPostId, dispatch])
 
     return (
         <Container maxWidth="lg">
@@ -33,10 +34,10 @@ const App = () => {
                 <Container>
                     <Grid container justifyContent="space-between" alignItems="stretch">
                         <Grid item xs={12} sm={7}>
-                            <Posts />
+                            <Posts setCurrentPostId={setCurrentPostId} />
                         </Grid>
                         <Grid item xs={12} sm={4}>
-                            <Form />
+                            <Form currentPostId={currentPostId} setCurrentPostId={setCurrentPostId} />
                         </Grid>
                     </Grid>
                 </Container>
