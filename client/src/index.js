@@ -15,7 +15,6 @@ import App from './App';
 // create project store
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
-
 reactDom.render(
     <Provider store={store}>
         <App />

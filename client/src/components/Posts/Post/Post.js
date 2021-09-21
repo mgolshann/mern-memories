@@ -42,15 +42,17 @@ const Post = ({ post, setCurrentPostId }) => {
             </div>
             <Typography className={classes.title} variant="h5" gutterBottom>{post.title}</Typography>
             <CardContent>
-                <Typography variant="h6" gutterBottom>{post.message}</Typography>
+                <Typography variant="body2" component="p" color="textSecondary" gutterBottom>{post.message}</Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
                 <div>
+                    
                     <Button
                         size="small"
                         color="primary"
                         onClick={() => dispatch(likePost(post._id))}>
                         <ThumbUp fontSize="small" style={{ color: post.typeLike === 'like' ? 'red' : 'lightgray' }} />
+                        &nbsp; 
                         {post.likeCount}
                     </Button>
 
@@ -59,8 +61,9 @@ const Post = ({ post, setCurrentPostId }) => {
                         color="primary"
                         onClick={() => dispatch(disLikePost(post._id))}>
                         <ThumbDown fontSize="small" style={{ color: post.typeLike === 'disLike' ? 'black' : 'lightgray' }} />
-                        {post.disLikeCount}
+                        &nbsp; {post.disLikeCount}
                     </Button>
+
                 </div>
                 <Button
                     size="small"

@@ -27,7 +27,7 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
     // 
     useEffect(() => {
         if (currentPostId) setPostData(post)
-    }, [post])
+    }, [post, currentPostId])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -53,7 +53,7 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h6">Create a memory</Typography>
+                <Typography variant="h6">{currentPostId ? 'Updating' : 'Creating'} a memory</Typography>
                 <TextField
                     name="creator"
                     variant="outlined"
