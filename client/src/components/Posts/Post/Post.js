@@ -9,8 +9,10 @@ import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@
 // import icons
 import DeleteIcon from '@material-ui/icons/Delete'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import ThumbUp from '@material-ui/icons/ThumbUp'
-import ThumbDown from '@material-ui/icons/ThumbDown'
+import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import ThumbDownAltOutlined from '@material-ui/icons/ThumbDownAltOutlined';
+import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 
 // import styles
 import useStyle from './styles'
@@ -19,24 +21,52 @@ import useStyle from './styles'
 import { useDispatch } from 'react-redux'
 
 // import actions
-import { deletePost, likePost, disLikePost } from '../../../actions'
+import { deletePost, likePost, disLikePost } from '../../../actions/posts'
 
 const Post = ({ post, setCurrentPostId }) => {
     const classes = useStyle();
     const dispatch = useDispatch();
 
+    // get user data from local storage
+    const user = JSON.parse(localStorage.getItem('profile'));
+
+    const Likes = () => {
+        if (post?.likes?.length > 0) {
+            const index = post?.likes?.find((like) => like === (user?.result?.googleId || user?.result?._id))
+            if (index?.length) {
+                return <><ThumbUpAltIcon fontSize="small" />&nbsp;{post.likes.length}</>
+            }
+        }
+        return <><ThumbUpAltOutlined fontSize="small" />&nbsp;{post?.likes?.length}</>;
+    };
+
+
+    const Dislikes = () => {
+        if (post?.dislikes?.length > 0) {
+            const index = post?.dislikes?.find((like) => like === (user?.result?.googleId || user?.result?._id))
+            if (index?.length > 0) {
+                return <><ThumbDownAltIcon fontSize="small" />&nbsp;{post.dislikes.length}</>
+            }
+        }
+        return <><ThumbDownAltOutlined fontSize="small" />&nbsp;{post?.dislikes?.length}</>;
+    };
+
+
+
     return (
         <Card className={classes.card}>
             <CardMedia className={classes.media} image={post.selectedFile} title={post.title} />
             <div className={classes.overlay}>
-                <Typography variant="h6">{post.creator}</Typography>
+                <Typography variant="h6">{post.name}</Typography>
                 <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
             </div>
-            <div className={classes.overlay2}>
-                <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentPostId(post._id)}>
-                    <MoreHorizIcon fontSize="default" />
-                </Button>
-            </div>
+            {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                <div className={classes.overlay2}>
+                    <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentPostId(post._id)}>
+                        <MoreHorizIcon fontSize="medium" />
+                    </Button>
+                </div>
+            )}
             <div className={classes.details}>
                 <Typography variant="body2" color="textSecondary">{post.tags.map(tag => `#${tag} `)}</Typography>
             </div>
@@ -46,33 +76,33 @@ const Post = ({ post, setCurrentPostId }) => {
             </CardContent>
             <CardActions className={classes.cardActions}>
                 <div>
-                    
+
                     <Button
                         size="small"
                         color="primary"
                         onClick={() => dispatch(likePost(post._id))}>
-                        <ThumbUp fontSize="small" style={{ color: post.typeLike === 'like' ? 'red' : 'lightgray' }} />
-                        &nbsp; 
-                        {post.likeCount}
+                        <Likes />
                     </Button>
 
                     <Button
                         size="small"
                         color="primary"
                         onClick={() => dispatch(disLikePost(post._id))}>
-                        <ThumbDown fontSize="small" style={{ color: post.typeLike === 'disLike' ? 'black' : 'lightgray' }} />
-                        &nbsp; {post.disLikeCount}
+                        <Dislikes />
                     </Button>
 
-                </div>
-                <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => dispatch(deletePost(post._id))}>
-                    <DeleteIcon fontSize="small" />
-                        Delete
-                </Button>
 
+                </div>
+
+                {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+                    <Button
+                        size="small"
+                        color="primary"
+                        onClick={() => dispatch(deletePost(post._id))}>
+                        <DeleteIcon fontSize="small" />
+                        Delete
+                    </Button>
+                )}
             </CardActions>
         </Card>
     )

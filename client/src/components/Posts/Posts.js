@@ -12,6 +12,7 @@ const Posts = ({ setCurrentPostId }) => {
     const posts = useSelector((state) => state.posts);
     const classes = useStyle();
 
+
     return (
         !posts.length ? (
             <Card>

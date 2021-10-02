@@ -1,11 +1,16 @@
 import * as type from '../type'
 
-export default (state = { authData: null }, action) => {
+const authReducer =  (state = { authData: null }, action) => {
     switch (action.type) {
         case type.AUTH:
             localStorage.setItem("profile", JSON.stringify({ ...action?.data }))
             return { ...state, authData: action?.data }
+        case type.LOGOUT:
+            localStorage.clear()
+            return { ...state, authData: null }
         default:
             return state
     }
 }
+
+export default authReducer;

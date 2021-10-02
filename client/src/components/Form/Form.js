@@ -6,7 +6,7 @@ import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
-import { createPost, updatePost } from '../../actions'
+import { createPost, updatePost } from '../../actions/posts'
 
 // import styles
 import useStyle from './styles'
@@ -16,15 +16,15 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
     const dispatch = useDispatch();
     const post = useSelector(state => currentPostId ? state.posts.find(p => p._id === currentPostId) : null)
 
+    const user = JSON.parse(localStorage.getItem("profile"));
+
     const [postData, setPostData] = useState({
-        creator: '',
         title: '',
         message: '',
         tags: '',
         selectedFile: ''
     })
 
-    // 
     useEffect(() => {
         if (currentPostId) setPostData(post)
     }, [post, currentPostId])
@@ -32,16 +32,15 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (currentPostId) {
-            dispatch(updatePost(currentPostId, postData))
+            dispatch(updatePost(currentPostId, { ...postData, name: user?.result?.name }))
         } else {
-            dispatch(createPost(postData))
+            dispatch(createPost({ ...postData, name: user?.result?.name }))
         }
         clear();
     }
 
     const clear = () => {
         setPostData({
-            creator: '',
             title: '',
             message: '',
             tags: '',
@@ -50,18 +49,19 @@ const Form = ({ currentPostId, setCurrentPostId }) => {
         setCurrentPostId(null)
     }
 
+    if (!user?.result?.name) {
+        return (
+            <Paper className={classes.paper}>
+                <Typography variant="h6" align="center">
+                    Please Sign In to create your own memories and like other's memories.
+        </Typography>
+            </Paper>
+        );
+    }
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">{currentPostId ? 'Updating' : 'Creating'} a memory</Typography>
-                <TextField
-                    name="creator"
-                    variant="outlined"
-                    label="Creator"
-                    fullWidth
-                    value={postData.creator}
-                    onChange={(e) => setPostData({ ...postData, creator: e.target.value })}
-                />
                 <TextField
                     name="title"
                     variant="outlined"

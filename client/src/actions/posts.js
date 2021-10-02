@@ -1,11 +1,11 @@
 
-import * as api from '../api';
+import * as API from '../api';
 import * as type from '../type';
 
 // action to fetch user posts
 export const getPosts = () => async (dispatch) => {
     try {
-        const { data } = await api.getPosts();
+        const { data } = await API.getPosts();
         dispatch({ type: type.FETCH_ALL, payload: data })
     } catch (error) {
         console.log(error)
@@ -15,7 +15,7 @@ export const getPosts = () => async (dispatch) => {
 // action to create new post 
 export const createPost = (newPost) => async (dispatch) => {
     try {
-        const { data } = await api.createPost(newPost)
+        const { data } = await API.createPost(newPost)
         dispatch({ type: type.CREATE_POST, payload: data })
     } catch (error) {
         console.log(error)
@@ -25,7 +25,7 @@ export const createPost = (newPost) => async (dispatch) => {
 // update post
 export const updatePost = (currentPostId, updatedPost) => async (dispatch) => {
     try {
-        const { data } = await api.updatePost(currentPostId, updatedPost)
+        const { data } = await API.updatePost(currentPostId, updatedPost)
         dispatch({ type: type.UPDATE_POST, payload: data })
     } catch (error) {
         console.log(error)
@@ -35,7 +35,7 @@ export const updatePost = (currentPostId, updatedPost) => async (dispatch) => {
 // delete post
 export const deletePost = (postId) => async (dispatch) => {
     try {
-        await api.deletePost(postId);
+        await API.deletePost(postId);
         dispatch({ type: type.DELETE_POST, payload: postId })
     } catch (error) {
         console.log(error)
@@ -45,7 +45,7 @@ export const deletePost = (postId) => async (dispatch) => {
 // like post
 export const likePost = (postId) => async (dispatch) => {
     try {
-        const { data } = await api.likePost(postId);
+        const { data } = await API.likePost(postId);
         dispatch({ type: type.LIKE_POST, payload: data })
     } catch (error) {
         console.log(error)
@@ -55,7 +55,7 @@ export const likePost = (postId) => async (dispatch) => {
 // dislike post
 export const disLikePost = (postId) => async (dispatch) => {
     try {
-        const { data } = await api.disLikePost(postId);
+        const { data } = await API.disLikePost(postId);
         dispatch({ type: type.DISLIKE_POST, payload: data })
     } catch (error) {
         console.log(error)

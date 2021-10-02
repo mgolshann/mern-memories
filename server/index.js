@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 // import routers
 import postRoutes from './routes/posts.js';
+import userRoutes from './routes/user.js'
 
 const app = express();
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(cors());
 
 // routes
 app.use('/posts', postRoutes)
+app.use('/user', userRoutes)
 
 // mongo connections settings
 const PORT = process.env.PORT || 5000;

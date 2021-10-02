@@ -1,7 +1,7 @@
 import * as type from '../type';
 
 // state managment 
-export default (posts = [], action) => {
+const postReducer = (posts = [], action) => {
     switch (action.type) {
         case type.FETCH_ALL: return action.payload;
         case type.LIKE_POST: 
@@ -12,3 +12,5 @@ export default (posts = [], action) => {
         default: return posts;
     }
 }
+
+export default postReducer

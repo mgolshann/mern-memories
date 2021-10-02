@@ -7,7 +7,7 @@ import { Grow, Grid, Container } from '@material-ui/core';
 import { useDispatch } from 'react-redux'
 
 // actions
-import { getPosts } from '../../actions'
+import { getPosts } from '../../actions/posts'
 
 // Styles
 import useStyle from './styles'
