@@ -3,10 +3,29 @@ import * as API from '../api';
 import * as type from '../type';
 
 // action to fetch user posts
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
     try {
-        const { data } = await API.getPosts();
+        dispatch({ type: type.START_LOADING })
+        const { data } = await API.getPosts(page);
         dispatch({ type: type.FETCH_ALL, payload: data })
+        dispatch({ type: type.END_LOADING })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getPostBySearch = (searchQuery) => async (dispatch) => {
+    try {
+        dispatch({ type: type.START_LOADING })
+        {/*
+        we have to destrucre the data two times.
+        1- because we're making an axios request
+        2- because we put it in a new object in the backend side where it has the data property
+        */}
+        const { data: { data } } = await API.fetchPostsBySearch(searchQuery)
+        dispatch({ type: type.FETCH_BY_SEARCH, payload: data })
+        dispatch({ type: type.END_LOADING })
+        // 
     } catch (error) {
         console.log(error)
     }
@@ -35,8 +54,10 @@ export const updatePost = (currentPostId, updatedPost) => async (dispatch) => {
 // delete post
 export const deletePost = (postId) => async (dispatch) => {
     try {
+        dispatch({ type: type.START_LOADING })
         await API.deletePost(postId);
         dispatch({ type: type.DELETE_POST, payload: postId })
+        dispatch({ type: type.END_LOADING })
     } catch (error) {
         console.log(error)
     }

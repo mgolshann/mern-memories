@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Card } from '@material-ui/core'
+import { Grid, CircularProgress } from '@material-ui/core'
 import Post from './Post/Post'
 
 // redux
@@ -9,19 +9,16 @@ import { useSelector } from 'react-redux'
 import useStyle from './styles'
 
 const Posts = ({ setCurrentPostId }) => {
-    const posts = useSelector((state) => state.posts);
     const classes = useStyle();
+    const { isLoading, posts } = useSelector((state) => state.posts);
 
+    if (!posts.length && !isLoading) return "No posts" 
 
     return (
-        !posts.length ? (
-            <Card>
-                <p>there is no post </p>
-            </Card>
-            ) : (
+        isLoading ? <CircularProgress /> : (
             <Grid container className={classes.container} alignItems="stretch" spacing={3}>
                 {posts.map(post => (
-                    <Grid item key={post._id} xs={12} sm={6}>
+                    <Grid item key={post._id} xs={12} sm={12} md={6} lg={3}>
                         <Post setCurrentPostId={setCurrentPostId} post={post} />
                     </Grid>
                 ))}

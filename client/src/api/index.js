@@ -11,10 +11,11 @@ API.interceptors.request.use((req) => {
 })
 
 // connect to server routes with axios
-export const getPosts = () => API.get('/posts')
+export const getPosts = (page) => API.get(`/posts?page=${page}`)
 export const createPost = (newPost) => API.post('/posts', newPost);
 export const updatePost = (currentPostId, updatedPost) => API.patch(`posts/${currentPostId}`, updatedPost);
 export const deletePost = (postId) => API.delete(`posts/${postId}`);
+export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`)
 
 // like & dislike post
 export const likePost = (postId) => API.patch(`posts/${postId}/likePost`);
